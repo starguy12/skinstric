@@ -89,14 +89,16 @@ function App() {
             autoFocus
           />
           {error && <p className="analysis-error">{error}</p>}
-          <button
-            type="button"
-            className="analysis-submit"
-            onClick={submitField}
-            disabled={submitting || !value.trim()}
-          >
-            {submitting ? 'Sending…' : field === 'name' ? 'Next' : 'Submit'}
-          </button>
+          {field === 'name' && (
+            <button
+              type="button"
+              className="analysis-submit"
+              onClick={submitField}
+              disabled={!value.trim()}
+            >
+              Next
+            </button>
+          )}
         </div>
 
         <div className="side-action back-action">
@@ -111,6 +113,22 @@ function App() {
             <span className="side-label">Back</span>
           </button>
         </div>
+
+        {field === 'location' && (
+          <div className="side-action proceed-action">
+            <button
+              type="button"
+              className="side-button"
+              onClick={submitField}
+              disabled={submitting || !value.trim()}
+            >
+              <span className="side-label">Proceed</span>
+              <span className="diamond-icon" aria-hidden="true">
+                <span className="diamond-caret diamond-caret--right" />
+              </span>
+            </button>
+          </div>
+        )}
       </div>
     )
   }
