@@ -545,8 +545,9 @@
 }
 
 .scan-icon {
-  width: 96px;
-  height: 96px;
+  width: 64px;
+  height: 64px;
+  stroke-width: 1;
 }
 
 .scan-label {
@@ -735,6 +736,7 @@
   width: 80px;
   height: 80px;
   color: #1A1B1C;
+  stroke-width: 1;
 }
 
 .setup-camera-text {

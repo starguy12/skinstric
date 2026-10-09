@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { FiAperture, FiCamera, FiImage } from 'react-icons/fi'
 import './App.css'
 
 const NAME_PATTERN = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/
@@ -445,17 +446,7 @@ function App() {
         <div className="dashed-diamond prep-square prep-square--3" aria-hidden="true" />
 
         <div className="setup-camera">
-          <svg viewBox="0 0 64 64" className="setup-camera-icon" aria-hidden="true">
-            <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
-            <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" strokeWidth="1" />
-            <g stroke="currentColor" strokeWidth="2">
-              <line x1="32" y1="10" x2="32" y2="24" />
-              <line x1="32" y1="40" x2="32" y2="54" />
-              <line x1="10" y1="32" x2="24" y2="32" />
-              <line x1="40" y1="32" x2="54" y2="32" />
-            </g>
-            <circle cx="32" cy="32" r="6" fill="currentColor" />
-          </svg>
+          <FiAperture className="setup-camera-icon" aria-hidden="true" />
           <p className="setup-camera-text">Setting up camera ...</p>
         </div>
 
@@ -509,11 +500,7 @@ function App() {
         <button type="button" className="shutter-button" onClick={capturePhoto}>
           <span className="shutter-label">Take picture</span>
           <span className="shutter-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <rect x="3" y="8" width="18" height="13" rx="2" />
-              <circle cx="12" cy="14.5" r="3.5" />
-              <path d="M8 8l1.5-2.5h5L16 8" />
-            </svg>
+            <FiCamera />
           </span>
         </button>
 
@@ -559,16 +546,7 @@ function App() {
             <div className="dashed-diamond scan-diamond scan-diamond--inner" aria-hidden="true" />
             <div className="dashed-diamond scan-diamond scan-diamond--outer" aria-hidden="true" />
             <button type="button" className="scan-button" onClick={requestCamera}>
-              <svg viewBox="0 0 64 64" className="scan-icon" aria-hidden="true">
-                <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
-                <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" strokeWidth="1" />
-                <g stroke="currentColor" strokeWidth="2">
-                  <line x1="32" y1="10" x2="32" y2="24" />
-                  <line x1="32" y1="40" x2="32" y2="54" />
-                  <line x1="10" y1="32" x2="24" y2="32" />
-                  <line x1="40" y1="32" x2="54" y2="32" />
-                </g>
-              </svg>
+              <FiAperture className="scan-icon" aria-hidden="true" />
             </button>
             <p className="scan-label scan-label--camera">
               Allow A.I.
@@ -581,11 +559,7 @@ function App() {
             <div className="dashed-diamond scan-diamond scan-diamond--inner" aria-hidden="true" />
             <div className="dashed-diamond scan-diamond scan-diamond--outer" aria-hidden="true" />
             <button type="button" className="scan-button" onClick={() => fileRef.current?.click()}>
-              <svg viewBox="0 0 64 64" className="scan-icon" aria-hidden="true">
-                <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
-                <circle cx="32" cy="22" r="5" fill="currentColor" />
-                <path d="M14 46 L26 32 L36 42 L44 34 L50 46 Z" fill="currentColor" />
-              </svg>
+              <FiImage className="scan-icon" aria-hidden="true" />
             </button>
             <p className="scan-label scan-label--gallery">
               Allow A.I.
