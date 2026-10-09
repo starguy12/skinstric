@@ -7,7 +7,9 @@ function App() {
         <div className="brand-block">
           <span className="brand-name">Skinstric</span>
           <button type="button" className="intro-tag">
-            [ Intro ]
+            <span className="bracket bracket--left" aria-hidden="true" />
+            <span className="intro-tag-text">Intro</span>
+            <span className="bracket bracket--right" aria-hidden="true" />
           </button>
         </div>
         <button type="button" className="code-button">
@@ -15,13 +17,13 @@ function App() {
         </button>
       </header>
 
-      <main className="intro-hero">
-        <h1 className="intro-title">
-          Sophisticated
-          <br />
-          skincare
-        </h1>
+      <h1 className="intro-title">
+        Sophisticated
+        <br />
+        skincare
+      </h1>
 
+      <main className="intro-hero">
         <div className="side-action side-action--left">
           <div className="dashed-diamond" aria-hidden="true" />
           <button type="button" className="side-button">
