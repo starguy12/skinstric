@@ -13,6 +13,7 @@ function App() {
   const [submitting, setSubmitting] = useState(false)
   const [cameraOn, setCameraOn] = useState(false)
   const [cameraError, setCameraError] = useState('')
+  const [actualTick, setActualTick] = useState(0)
   const videoRef = useRef(null)
   const streamRef = useRef(null)
   const fileRef = useRef(null)
@@ -66,8 +67,9 @@ function App() {
 
   const sendImage = async (base64) => {
     localStorage.setItem('skinstric-image', base64)
+    setPage('preparing')
     try {
-      await fetch(
+      const res = await fetch(
         'https://us-central1-frontend-simplified.cloudfunctions.net/skinstricPhaseTwo',
         {
           method: 'POST',
@@ -75,8 +77,14 @@ function App() {
           body: JSON.stringify({ image: base64 }),
         }
       )
+      const data = await res.json().catch(() => null)
+      if (data?.data) {
+        localStorage.setItem('skinstric-results', JSON.stringify(data.data))
+      }
     } catch {
       setCameraError('Could not upload the image. It is saved locally.')
+    } finally {
+      setPage('results')
     }
   }
 
@@ -112,6 +120,175 @@ function App() {
     const reader = new FileReader()
     reader.onload = () => sendImage(reader.result)
     reader.readAsDataURL(file)
+  }
+
+  if (page === 'demographics') {
+    const stored = JSON.parse(localStorage.getItem('skinstric-results') || '{}')
+    const categories = [
+      { key: 'race', label: 'Race' },
+      { key: 'age', label: 'Age' },
+      { key: 'gender', label: 'Gender' },
+    ]
+
+    const sortedEntries = (obj) =>
+      Object.entries(obj || {}).sort((a, b) => b[1] - a[1])
+
+    const topOf = (key) => sortedEntries(stored[key])[0]?.[0] || ''
+
+    const actuals = JSON.parse(localStorage.getItem('skinstric-actuals') || '{}')
+    const actualOf = (key) => actuals[key] || topOf(key)
+
+    const pick = (key, value) => {
+      const next = { ...actuals, [key]: value }
+      localStorage.setItem('skinstric-actuals', JSON.stringify(next))
+      setActualTick((t) => t + 1)
+    }
+
+    return (
+      <div className="intro-page analysis-page">
+        <header className="intro-header">
+          <div className="brand-block">
+            <span className="brand-name">Skinstric</span>
+            <button type="button" className="intro-tag">
+              <span className="bracket bracket--left" aria-hidden="true" />
+              <span className="intro-tag-text">Analysis</span>
+              <span className="bracket bracket--right" aria-hidden="true" />
+            </button>
+          </div>
+        </header>
+
+        <div className="results-copy">
+          <p className="analysis-caption results-title">A. I. Analysis</p>
+          <p className="results-sub">Demographics</p>
+        </div>
+
+        <div className="demo-layout">
+          <aside className="demo-sidebar">
+            {categories.map(({ key, label }) => (
+              <div key={key} className="demo-sidebar-block">
+                <span className="demo-sidebar-label">{label}</span>
+                <strong className="demo-sidebar-value">{actualOf(key)}</strong>
+              </div>
+            ))}
+          </aside>
+
+          <div className="demo-lists">
+            {categories.map(({ key, label }) => (
+              <div key={key} className="demo-list">
+                <p className="demo-list-title">{label}</p>
+                {sortedEntries(stored[key]).map(([name, score]) => (
+                  <button
+                    key={name}
+                    type="button"
+                    className={
+                      actualOf(key) === name ? 'demo-row demo-row--selected' : 'demo-row'
+                    }
+                    onClick={() => pick(key, name)}
+                  >
+                    <span className="demo-row-name">{name}</span>
+                    <span className="demo-row-score">{(score * 100).toFixed(2)}%</span>
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="side-action back-action">
+          <button type="button" className="side-button" onClick={() => setPage('results')}>
+            <span className="diamond-icon" aria-hidden="true">
+              <span className="diamond-caret diamond-caret--left" />
+            </span>
+            <span className="side-label">Back</span>
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (page === 'results') {
+    return (
+      <div className="intro-page analysis-page">
+        <header className="intro-header">
+          <div className="brand-block">
+            <span className="brand-name">Skinstric</span>
+            <button type="button" className="intro-tag">
+              <span className="bracket bracket--left" aria-hidden="true" />
+              <span className="intro-tag-text">Analysis</span>
+              <span className="bracket bracket--right" aria-hidden="true" />
+            </button>
+          </div>
+        </header>
+
+        <div className="results-copy">
+          <p className="analysis-caption results-title">A. I. Analysis</p>
+          <p className="results-sub">
+            A. I. has estimated the following.
+            <br />
+            Fix estimated information if needed.
+          </p>
+        </div>
+
+        <div className="dashed-diamond analysis-diamond analysis-diamond--inner" aria-hidden="true" />
+        <div className="dashed-diamond analysis-diamond analysis-diamond--outer" aria-hidden="true" />
+
+        <div className="results-grid">
+          <button
+            type="button"
+            className="results-cell results-cell--active"
+            onClick={() => setPage('demographics')}
+          >
+            <span>Demographics</span>
+          </button>
+          <button type="button" className="results-cell">
+            <span>
+              Skin type
+              <br />
+              details
+            </span>
+          </button>
+          <button type="button" className="results-cell">
+            <span>
+              Cosmetic
+              <br />
+              concerns
+            </span>
+          </button>
+          <button type="button" className="results-cell">
+            <span>Weather</span>
+          </button>
+        </div>
+
+        <div className="side-action back-action">
+          <button type="button" className="side-button" onClick={() => setPage('scan')}>
+            <span className="diamond-icon" aria-hidden="true">
+              <span className="diamond-caret diamond-caret--left" />
+            </span>
+            <span className="side-label">Back</span>
+          </button>
+        </div>
+
+        <div className="side-action proceed-action">
+          <button type="button" className="side-button" onClick={() => setPage('demographics')}>
+            <span className="side-label">Get Summary</span>
+            <span className="diamond-icon" aria-hidden="true">
+              <span className="diamond-caret diamond-caret--right" />
+            </span>
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (page === 'preparing') {
+    return (
+      <div className="intro-page analysis-page">
+        <div className="dashed-diamond prep-square prep-square--1" aria-hidden="true" />
+        <div className="dashed-diamond prep-square prep-square--2" aria-hidden="true" />
+        <div className="dashed-diamond prep-square prep-square--3" aria-hidden="true" />
+        <p className="prep-text">Preparing your analysis ...</p>
+      </div>
+    )
   }
 
   if (page === 'scan') {
