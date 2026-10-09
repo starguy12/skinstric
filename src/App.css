@@ -157,6 +157,7 @@
   color: #1A1B1C;
   opacity: 1;
   transform: rotate(0deg);
+  transition: left 0.5s ease, text-align 0.5s ease;
 }
 
 .side-action {
@@ -203,6 +204,24 @@
 
 .dashed-diamond--right {
   left: 100%;
+}
+
+.dashed-diamond--right-outer {
+  left: 100%;
+  display: none;
+  width: calc(732 / 1920 * 100vw);
+  height: calc(732 / 1920 * 100vw);
+}
+
+.intro-page--result .dashed-diamond--right-outer {
+  display: block;
+}
+
+@media (max-height: 950px) {
+  .dashed-diamond--right-outer {
+    width: min(calc(732 / 1920 * 100vw), calc((480 / 1080 * 100vh - 64px) * 1.4142));
+    height: min(calc(732 / 1920 * 100vw), calc((480 / 1080 * 100vh - 64px) * 1.4142));
+  }
 }
 
 .side-action:hover ~ .dashed-diamond,
@@ -255,6 +274,30 @@
   height: 16px;
   text-align: right;
   opacity: 0.7;
+}
+
+/* Page 2: result state */
+.intro-page--result .intro-title {
+  left: 32px;
+  width: auto;
+  text-align: left;
+}
+
+.intro-page--result .dashed-diamond--left,
+.intro-page--result .side-action--left {
+  display: none;
+}
+
+.intro-page--result .side-action--right {
+  left: calc(1651 / 1920 * 100vw);
+}
+
+.intro-page--result .side-action--right .diamond-icon {
+  background: #1A1B1C;
+}
+
+.intro-page--result .side-action--right .diamond-caret--right {
+  background: #ffffff;
 }
 
 .diamond-icon {

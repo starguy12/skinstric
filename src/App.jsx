@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import './App.css'
 
 function App() {
+  const [result, setResult] = useState(false)
+
   return (
-    <div className="intro-page">
+    <div className={result ? 'intro-page intro-page--result' : 'intro-page'}>
       <header className="intro-header">
         <div className="brand-block">
           <span className="brand-name">Skinstric</span>
@@ -25,6 +28,7 @@ function App() {
 
       <div className="dashed-diamond dashed-diamond--left" aria-hidden="true" />
       <div className="dashed-diamond dashed-diamond--right" aria-hidden="true" />
+      <div className="dashed-diamond dashed-diamond--right-outer" aria-hidden="true" />
 
       <div className="side-action side-action--left">
         <button type="button" className="side-button">
@@ -36,7 +40,7 @@ function App() {
       </div>
 
       <div className="side-action side-action--right">
-        <button type="button" className="side-button">
+        <button type="button" className="side-button" onClick={() => setResult(true)}>
           <span className="side-label">Take Test</span>
           <span className="diamond-icon" aria-hidden="true">
             <span className="diamond-caret diamond-caret--right" />
