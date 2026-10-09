@@ -14,7 +14,7 @@ function App() {
 
   const value = field === 'name' ? name : location
   const setValue = field === 'name' ? setName : setLocation
-  const placeholder = field === 'name' ? 'Introduce Yourself' : 'Where are you based?'
+  const placeholder = field === 'name' ? 'Introduce Yourself' : 'Where are you from?'
 
   const submitField = async () => {
     const trimmed = value.trim()
@@ -81,7 +81,10 @@ function App() {
             type="text"
             value={value}
             placeholder={placeholder}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              setValue(e.target.value)
+              setError('')
+            }}
             onKeyDown={(e) => e.key === 'Enter' && submitField()}
             autoFocus
           />
@@ -90,14 +93,18 @@ function App() {
             type="button"
             className="analysis-submit"
             onClick={submitField}
-            disabled={submitting}
+            disabled={submitting || !value.trim()}
           >
             {submitting ? 'Sending…' : field === 'name' ? 'Next' : 'Submit'}
           </button>
         </div>
 
         <div className="side-action back-action">
-          <button type="button" className="side-button" onClick={() => setPage('intro')}>
+          <button
+            type="button"
+            className="side-button"
+            onClick={() => (field === 'location' ? setField('name') : setPage('intro'))}
+          >
             <span className="diamond-icon" aria-hidden="true">
               <span className="diamond-caret diamond-caret--left" />
             </span>

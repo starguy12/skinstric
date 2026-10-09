@@ -379,6 +379,18 @@
   height: calc(680 / 1920 * 100vw);
 }
 
+@media (max-height: 950px) {
+  .analysis-diamond--inner {
+    width: min(calc(560 / 1920 * 100vw), calc((100vh - 64px - 100px) / 1.4142));
+    height: min(calc(560 / 1920 * 100vw), calc((100vh - 64px - 100px) / 1.4142));
+  }
+
+  .analysis-diamond--outer {
+    width: min(calc(680 / 1920 * 100vw), calc((100vh - 64px - 100px) / 1.4142));
+    height: min(calc(680 / 1920 * 100vw), calc((100vh - 64px - 100px) / 1.4142));
+  }
+}
+
 .analysis-form {
   position: absolute;
   top: 50%;
