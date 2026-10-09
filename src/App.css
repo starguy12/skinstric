@@ -593,6 +593,85 @@
   transform: scaleX(-1);
 }
 
+/* Fullscreen live camera */
+.camera-live {
+  background: #000000;
+}
+
+.camera-live-header {
+  z-index: 20;
+}
+
+.camera-live-header .brand-name,
+.camera-live-header .intro-tag-text {
+  color: #ffffff;
+}
+
+.camera-live-header .bracket {
+  border-color: #ffffff;
+}
+
+.camera-fullscreen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.shutter-button {
+  position: absolute;
+  top: 50%;
+  right: 32px;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.shutter-label {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.shutter-icon {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shutter-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.setup-tips--live {
+  bottom: 24px;
+  color: #ffffff;
+}
+
+.setup-tips--live .setup-tips-title,
+.setup-tips--live .setup-tip {
+  color: #ffffff;
+}
+
+.setup-tips--live .demo-row-diamond {
+  border-color: #ffffff;
+}
+
 .camera-prompt {
   position: absolute;
   top: 50%;
@@ -1042,6 +1121,65 @@
 .demo-action-btn--solid {
   background: #1A1B1C;
   color: #ffffff;
+}
+
+/* Final page */
+.final-layout {
+  position: absolute;
+  inset: 64px 32px 96px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  z-index: 5;
+}
+
+.final-photo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  overflow: hidden;
+}
+
+.final-photo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.final-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.final-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.final-row {
+  background: #f0f0f0;
+  padding: 0.9rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .final-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    inset: 80px 16px 90px;
+    overflow: auto;
+  }
+
+  .final-photo-wrap {
+    max-height: 45vh;
+  }
 }
 
 /* Tablet (≤1024px) */

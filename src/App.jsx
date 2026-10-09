@@ -276,8 +276,76 @@ function App() {
           <button type="button" className="demo-action-btn" onClick={reset}>
             Reset
           </button>
-          <button type="button" className="demo-action-btn demo-action-btn--solid">
+          <button
+            type="button"
+            className="demo-action-btn demo-action-btn--solid"
+            onClick={() => setPage('final')}
+          >
             Confirm
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (page === 'final') {
+    const image = localStorage.getItem('skinstric-image')
+    const actuals = JSON.parse(localStorage.getItem('skinstric-actuals') || '{}')
+    const storedResults = JSON.parse(localStorage.getItem('skinstric-results') || '{}')
+    const topOf = (key) =>
+      Object.entries(storedResults[key] || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || ''
+    const finalRace = actuals.race || topOf('race')
+    const finalAge = actuals.age || topOf('age')
+    const finalGender = actuals.gender || topOf('gender')
+    const userName = localStorage.getItem('skinstric-name') || ''
+
+    return (
+      <div className="intro-page analysis-page">
+        <header className="intro-header">
+          <div className="brand-block">
+            <span className="brand-name">Skinstric</span>
+            <button type="button" className="intro-tag">
+              <span className="bracket bracket--left" aria-hidden="true" />
+              <span className="intro-tag-text">Analysis</span>
+              <span className="bracket bracket--right" aria-hidden="true" />
+            </button>
+          </div>
+        </header>
+
+        <div className="final-layout">
+          {image && (
+            <div className="final-photo-wrap">
+              <img src={image} alt="Your captured face" className="final-photo" />
+            </div>
+          )}
+          <div className="final-summary">
+            <p className="analysis-caption results-title">A. I. Analysis</p>
+            <h1 className="demo-title">
+              {userName ? `${userName}’s profile` : 'Your profile'}
+            </h1>
+            <div className="final-rows">
+              <div className="final-row">
+                <span className="demo-sidebar-label">Race</span>
+                <span className="demo-sidebar-value">{finalRace}</span>
+              </div>
+              <div className="final-row">
+                <span className="demo-sidebar-label">Age</span>
+                <span className="demo-sidebar-value">{finalAge}</span>
+              </div>
+              <div className="final-row">
+                <span className="demo-sidebar-label">Sex</span>
+                <span className="demo-sidebar-value">{finalGender}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="side-action back-action">
+          <button type="button" className="side-button" onClick={() => setPage('demographics')}>
+            <span className="diamond-icon" aria-hidden="true">
+              <span className="diamond-caret diamond-caret--left" />
+            </span>
+            <span className="side-label">Back</span>
           </button>
         </div>
       </div>
@@ -412,6 +480,64 @@ function App() {
     )
   }
 
+  if (page === 'scan' && cameraOn) {
+    return (
+      <div className="intro-page camera-live">
+        <header className="intro-header camera-live-header">
+          <div className="brand-block">
+            <span className="brand-name">Skinstric</span>
+            <button type="button" className="intro-tag">
+              <span className="bracket bracket--left" aria-hidden="true" />
+              <span className="intro-tag-text">Intro</span>
+              <span className="bracket bracket--right" aria-hidden="true" />
+            </button>
+          </div>
+        </header>
+
+        <video
+          ref={(el) => {
+            videoRef.current = el
+            if (el && streamRef.current) {
+              el.srcObject = streamRef.current
+            }
+          }}
+          autoPlay
+          playsInline
+          className="camera-fullscreen"
+        />
+
+        <button type="button" className="shutter-button" onClick={capturePhoto}>
+          <span className="shutter-label">Take picture</span>
+          <span className="shutter-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="3" y="8" width="18" height="13" rx="2" />
+              <circle cx="12" cy="14.5" r="3.5" />
+              <path d="M8 8l1.5-2.5h5L16 8" />
+            </svg>
+          </span>
+        </button>
+
+        <div className="setup-tips setup-tips--live">
+          <p className="setup-tips-title">To get better results make sure to have</p>
+          <div className="setup-tips-row">
+            <span className="setup-tip">
+              <span className="demo-row-diamond" aria-hidden="true" />
+              Neutral expression
+            </span>
+            <span className="setup-tip">
+              <span className="demo-row-diamond" aria-hidden="true" />
+              Frontal pose
+            </span>
+            <span className="setup-tip">
+              <span className="demo-row-diamond" aria-hidden="true" />
+              Adequate lighting
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (page === 'scan') {
     return (
       <div className="intro-page analysis-page">
@@ -432,37 +558,18 @@ function App() {
           <div className="scan-option">
             <div className="dashed-diamond scan-diamond scan-diamond--inner" aria-hidden="true" />
             <div className="dashed-diamond scan-diamond scan-diamond--outer" aria-hidden="true" />
-            {cameraOn ? (
-              <div className="camera-box">
-                <video
-                  ref={(el) => {
-                    videoRef.current = el
-                    if (el && streamRef.current) {
-                      el.srcObject = streamRef.current
-                    }
-                  }}
-                  autoPlay
-                  playsInline
-                  className="camera-video"
-                />
-                <button type="button" className="analysis-submit" onClick={capturePhoto}>
-                  Capture
-                </button>
-              </div>
-            ) : (
-              <button type="button" className="scan-button" onClick={requestCamera}>
-                <svg viewBox="0 0 64 64" className="scan-icon" aria-hidden="true">
-                  <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
-                  <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" strokeWidth="1" />
-                  <g stroke="currentColor" strokeWidth="2">
-                    <line x1="32" y1="10" x2="32" y2="24" />
-                    <line x1="32" y1="40" x2="32" y2="54" />
-                    <line x1="10" y1="32" x2="24" y2="32" />
-                    <line x1="40" y1="32" x2="54" y2="32" />
-                  </g>
-                </svg>
-              </button>
-            )}
+            <button type="button" className="scan-button" onClick={requestCamera}>
+              <svg viewBox="0 0 64 64" className="scan-icon" aria-hidden="true">
+                <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
+                <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" strokeWidth="1" />
+                <g stroke="currentColor" strokeWidth="2">
+                  <line x1="32" y1="10" x2="32" y2="24" />
+                  <line x1="32" y1="40" x2="32" y2="54" />
+                  <line x1="10" y1="32" x2="24" y2="32" />
+                  <line x1="40" y1="32" x2="54" y2="32" />
+                </g>
+              </svg>
+            </button>
             <p className="scan-label scan-label--camera">
               Allow A.I.
               <br />
