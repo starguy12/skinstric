@@ -23,26 +23,28 @@ function App() {
         skincare
       </h1>
 
-      <main className="intro-hero">
-        <div className="side-action side-action--left">
-          <div className="dashed-diamond" aria-hidden="true" />
-          <button type="button" className="side-button">
-            <span className="diamond-icon" aria-hidden="true">
-              <span className="diamond-caret diamond-caret--left" />
-            </span>
-            <span className="side-label">Discover A.I.</span>
-          </button>
-        </div>
+      <div className="dashed-diamond dashed-diamond--left" aria-hidden="true" />
+      <div className="dashed-diamond dashed-diamond--right" aria-hidden="true" />
 
-        <div className="side-action side-action--right">
-          <div className="dashed-diamond" aria-hidden="true" />
-          <button type="button" className="side-button">
-            <span className="side-label">Take Test</span>
-            <span className="diamond-icon" aria-hidden="true">
-              <span className="diamond-caret diamond-caret--right" />
-            </span>
-          </button>
-        </div>
+      <div className="side-action side-action--left">
+        <button type="button" className="side-button">
+          <span className="diamond-icon" aria-hidden="true">
+            <span className="diamond-caret diamond-caret--left" />
+          </span>
+          <span className="side-label">Discover A.I.</span>
+        </button>
+      </div>
+
+      <div className="side-action side-action--right">
+        <button type="button" className="side-button">
+          <span className="side-label">Take Test</span>
+          <span className="diamond-icon" aria-hidden="true">
+            <span className="diamond-caret diamond-caret--right" />
+          </span>
+        </button>
+      </div>
+
+      <main className="intro-hero">
       </main>
 
       <p className="intro-footnote">
