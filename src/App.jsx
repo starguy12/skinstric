@@ -13,7 +13,9 @@ function App() {
   const [submitting, setSubmitting] = useState(false)
   const [cameraOn, setCameraOn] = useState(false)
   const [cameraError, setCameraError] = useState('')
+  const [showCameraPrompt, setShowCameraPrompt] = useState(false)
   const [actualTick, setActualTick] = useState(0)
+  const [focusKey, setFocusKey] = useState('age')
   const videoRef = useRef(null)
   const streamRef = useRef(null)
   const fileRef = useRef(null)
@@ -90,13 +92,30 @@ function App() {
 
   const startCamera = async () => {
     setCameraError('')
+    setPage('camera-setup')
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true })
       streamRef.current = stream
       setCameraOn(true)
+      setPage('scan')
     } catch {
-      setCameraError('Camera access was denied or is unavailable.')
+      setCameraError(
+        'Camera unavailable. Check browser permission for this site and Windows camera settings, then try again.'
+      )
+      setPage('scan')
     }
+  }
+
+  const requestCamera = () => setShowCameraPrompt(true)
+
+  const allowCamera = () => {
+    setShowCameraPrompt(false)
+    startCamera()
+  }
+
+  const denyCamera = () => {
+    setShowCameraPrompt(false)
+    setCameraError('Camera access was denied.')
   }
 
   const capturePhoto = () => {
@@ -124,13 +143,14 @@ function App() {
     const categories = [
       { key: 'race', label: 'Race' },
       { key: 'age', label: 'Age' },
-      { key: 'gender', label: 'Gender' },
+      { key: 'gender', label: 'Sex' },
     ]
 
     const sortedEntries = (obj) =>
       Object.entries(obj || {}).sort((a, b) => b[1] - a[1])
 
     const topOf = (key) => sortedEntries(stored[key])[0]?.[0] || ''
+    const topScoreOf = (key) => sortedEntries(stored[key])[0]?.[1] || 0
 
     const actuals = JSON.parse(localStorage.getItem('skinstric-actuals') || '{}')
     const actualOf = (key) => actuals[key] || topOf(key)
@@ -140,6 +160,19 @@ function App() {
       localStorage.setItem('skinstric-actuals', JSON.stringify(next))
       setActualTick((t) => t + 1)
     }
+
+    const reset = () => {
+      localStorage.removeItem('skinstric-actuals')
+      setActualTick((t) => t + 1)
+    }
+
+    const focusValue = actualOf(focusKey)
+    const focusScore =
+      actuals[focusKey] && stored[focusKey]?.[actuals[focusKey]] !== undefined
+        ? stored[focusKey][actuals[focusKey]]
+        : topScoreOf(focusKey)
+
+    const focusSuffix = focusKey === 'age' ? ' y.o.' : ''
 
     return (
       <div className="intro-page analysis-page">
@@ -154,42 +187,81 @@ function App() {
           </div>
         </header>
 
-        <div className="results-copy">
+        <div className="demo-heading">
           <p className="analysis-caption results-title">A. I. Analysis</p>
-          <p className="results-sub">Demographics</p>
+          <div className="demo-title-row">
+            <h1 className="demo-title">Demographics</h1>
+          </div>
+          <p className="demo-subtitle">Predicted race & age</p>
         </div>
 
         <div className="demo-layout">
           <aside className="demo-sidebar">
             {categories.map(({ key, label }) => (
-              <div key={key} className="demo-sidebar-block">
+              <button
+                key={key}
+                type="button"
+                className={
+                  key === focusKey
+                    ? 'demo-sidebar-block demo-sidebar-block--active'
+                    : 'demo-sidebar-block'
+                }
+                onClick={() => setFocusKey(key)}
+              >
+                <span className="demo-sidebar-value">{actualOf(key)}</span>
                 <span className="demo-sidebar-label">{label}</span>
-                <strong className="demo-sidebar-value">{actualOf(key)}</strong>
-              </div>
+              </button>
             ))}
           </aside>
 
-          <div className="demo-lists">
-            {categories.map(({ key, label }) => (
-              <div key={key} className="demo-list">
-                <p className="demo-list-title">{label}</p>
-                {sortedEntries(stored[key]).map(([name, score]) => (
-                  <button
-                    key={name}
-                    type="button"
-                    className={
-                      actualOf(key) === name ? 'demo-row demo-row--selected' : 'demo-row'
-                    }
-                    onClick={() => pick(key, name)}
-                  >
-                    <span className="demo-row-name">{name}</span>
-                    <span className="demo-row-score">{(score * 100).toFixed(2)}%</span>
-                  </button>
-                ))}
-              </div>
+          <div className="demo-center">
+            <p className="demo-focus-value">
+              {focusValue}
+              {focusSuffix}
+            </p>
+            <div className="demo-ring">
+              <svg viewBox="0 0 200 200" className="demo-ring-svg">
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="90"
+                  fill="none"
+                  stroke="#1A1B1C"
+                  strokeWidth="1.5"
+                  strokeDasharray={`${focusScore * 565.5} 565.5`}
+                  strokeLinecap="round"
+                  transform="rotate(-90 100 100)"
+                />
+              </svg>
+              <span className="demo-ring-text">{(focusScore * 100).toFixed(0)} %</span>
+            </div>
+          </div>
+
+          <div className="demo-confidence">
+            <div className="demo-confidence-head">
+              <span>{categories.find((c) => c.key === focusKey)?.label}</span>
+              <span>A. I. confidence</span>
+            </div>
+            {sortedEntries(stored[focusKey]).map(([name, score]) => (
+              <button
+                key={name}
+                type="button"
+                className={
+                  actualOf(focusKey) === name ? 'demo-row demo-row--selected' : 'demo-row'
+                }
+                onClick={() => pick(focusKey, name)}
+              >
+                <span className="demo-row-name">
+                  <span className="demo-row-diamond" aria-hidden="true" />
+                  {name}
+                </span>
+                <span className="demo-row-score">{(score * 100).toFixed(0)} %</span>
+              </button>
             ))}
           </div>
         </div>
+
+        <p className="demo-hint">If A.I. estimate is wrong, select the correct one.</p>
 
         <div className="side-action back-action">
           <button type="button" className="side-button" onClick={() => setPage('results')}>
@@ -197,6 +269,15 @@ function App() {
               <span className="diamond-caret diamond-caret--left" />
             </span>
             <span className="side-label">Back</span>
+          </button>
+        </div>
+
+        <div className="demo-actions">
+          <button type="button" className="demo-action-btn" onClick={reset}>
+            Reset
+          </button>
+          <button type="button" className="demo-action-btn demo-action-btn--solid">
+            Confirm
           </button>
         </div>
       </div>
@@ -288,6 +369,49 @@ function App() {
     )
   }
 
+  if (page === 'camera-setup') {
+    return (
+      <div className="intro-page analysis-page">
+        <div className="dashed-diamond prep-square prep-square--1" aria-hidden="true" />
+        <div className="dashed-diamond prep-square prep-square--2" aria-hidden="true" />
+        <div className="dashed-diamond prep-square prep-square--3" aria-hidden="true" />
+
+        <div className="setup-camera">
+          <svg viewBox="0 0 64 64" className="setup-camera-icon" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
+            <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" strokeWidth="1" />
+            <g stroke="currentColor" strokeWidth="2">
+              <line x1="32" y1="10" x2="32" y2="24" />
+              <line x1="32" y1="40" x2="32" y2="54" />
+              <line x1="10" y1="32" x2="24" y2="32" />
+              <line x1="40" y1="32" x2="54" y2="32" />
+            </g>
+            <circle cx="32" cy="32" r="6" fill="currentColor" />
+          </svg>
+          <p className="setup-camera-text">Setting up camera ...</p>
+        </div>
+
+        <div className="setup-tips">
+          <p className="setup-tips-title">To get better results make sure to have</p>
+          <div className="setup-tips-row">
+            <span className="setup-tip">
+              <span className="demo-row-diamond" aria-hidden="true" />
+              Neutral expression
+            </span>
+            <span className="setup-tip">
+              <span className="demo-row-diamond" aria-hidden="true" />
+              Frontal pose
+            </span>
+            <span className="setup-tip">
+              <span className="demo-row-diamond" aria-hidden="true" />
+              Adequate lighting
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (page === 'scan') {
     return (
       <div className="intro-page analysis-page">
@@ -326,7 +450,7 @@ function App() {
                 </button>
               </div>
             ) : (
-              <button type="button" className="scan-button" onClick={startCamera}>
+              <button type="button" className="scan-button" onClick={requestCamera}>
                 <svg viewBox="0 0 64 64" className="scan-icon" aria-hidden="true">
                   <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" strokeWidth="2" />
                   <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" strokeWidth="1" />
@@ -372,6 +496,20 @@ function App() {
         </div>
 
         {cameraError && <p className="analysis-error scan-error">{cameraError}</p>}
+
+        {showCameraPrompt && (
+          <div className="camera-prompt">
+            <p className="camera-prompt-title">Allow A.I. to access your camera</p>
+            <div className="camera-prompt-actions">
+              <button type="button" className="camera-prompt-btn" onClick={denyCamera}>
+                Deny
+              </button>
+              <button type="button" className="camera-prompt-btn" onClick={allowCamera}>
+                Allow
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="side-action back-action">
           <button
