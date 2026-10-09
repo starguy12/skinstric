@@ -94,9 +94,6 @@ function App() {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true })
       streamRef.current = stream
       setCameraOn(true)
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream
-      }
     } catch {
       setCameraError('Camera access was denied or is unavailable.')
     }
@@ -313,7 +310,17 @@ function App() {
             <div className="dashed-diamond scan-diamond scan-diamond--outer" aria-hidden="true" />
             {cameraOn ? (
               <div className="camera-box">
-                <video ref={videoRef} autoPlay playsInline className="camera-video" />
+                <video
+                  ref={(el) => {
+                    videoRef.current = el
+                    if (el && streamRef.current) {
+                      el.srcObject = streamRef.current
+                    }
+                  }}
+                  autoPlay
+                  playsInline
+                  className="camera-video"
+                />
                 <button type="button" className="analysis-submit" onClick={capturePhoto}>
                   Capture
                 </button>
