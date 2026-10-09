@@ -498,3 +498,97 @@
   opacity: 0.4;
   cursor: default;
 }
+
+/* Page 5: scan choice */
+.scan-options {
+  position: absolute;
+  inset: 64px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(200 / 1920 * 100vw);
+}
+
+.scan-option {
+  position: relative;
+  width: calc(420 / 1920 * 100vw);
+  height: calc(420 / 1080 * 100vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scan-diamond {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.scan-diamond--inner {
+  width: min(calc(300 / 1920 * 100vw), calc(300 / 1080 * 100vh));
+  height: min(calc(300 / 1920 * 100vw), calc(300 / 1080 * 100vh));
+}
+
+.scan-diamond--outer {
+  width: min(calc(400 / 1920 * 100vw), calc(400 / 1080 * 100vh));
+  height: min(calc(400 / 1920 * 100vw), calc(400 / 1080 * 100vh));
+}
+
+.scan-button {
+  position: relative;
+  z-index: 5;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #1A1B1C;
+  cursor: pointer;
+}
+
+.scan-icon {
+  width: 96px;
+  height: 96px;
+}
+
+.scan-label {
+  position: absolute;
+  margin: 0;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: #1A1B1C;
+}
+
+.scan-label--camera {
+  top: 18%;
+  left: 72%;
+}
+
+.scan-label--gallery {
+  bottom: 18%;
+  right: 62%;
+  text-align: right;
+}
+
+.scan-error {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.camera-box {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.camera-video {
+  width: min(320px, 40vw);
+  border-radius: 8px;
+  transform: scaleX(-1);
+}
