@@ -778,3 +778,184 @@
 .demo-row-score {
   font-variant-numeric: tabular-nums;
 }
+
+/* Tablet (≤1024px) */
+@media (max-width: 1024px) {
+  .intro-title {
+    font-size: calc(96 / 1080 * 100vh);
+  }
+
+  .side-action--left {
+    left: calc(180 / 1024 * 100vw);
+  }
+
+  .side-action--right {
+    left: auto;
+    right: calc(180 / 1024 * 100vw);
+    transform: translate(100%, -50%) rotate(0deg);
+  }
+
+  .intro-page--result .side-action--right {
+    left: auto;
+    right: calc(200 / 1024 * 100vw);
+  }
+
+  .scan-options {
+    gap: 3rem;
+  }
+
+  .demo-layout {
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .demo-sidebar {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .demo-sidebar-block {
+    flex: 1;
+  }
+
+  .demo-lists {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile (≤640px) */
+@media (max-width: 640px) {
+  .intro-title {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    font-size: clamp(2.2rem, 11vw, 3.5rem);
+    height: auto;
+  }
+
+  .intro-page--result .intro-title {
+    left: 32px;
+    transform: none;
+  }
+
+  .side-action--left {
+    left: 32px;
+  }
+
+  .side-action--right {
+    left: auto;
+    right: 32px;
+    transform: translate(0, -50%) rotate(0deg);
+  }
+
+  .intro-page--result .side-action--right {
+    left: auto;
+    right: 32px;
+  }
+
+  .dashed-diamond--left,
+  .dashed-diamond--right,
+  .dashed-diamond--right-outer {
+    display: none;
+  }
+
+  .intro-footnote {
+    left: 16px;
+    width: 260px;
+  }
+
+  .analysis-caption {
+    left: 16px;
+  }
+
+  .analysis-diamond--outer {
+    display: none;
+  }
+
+  .analysis-diamond--inner {
+    width: 88vmin;
+    height: 88vmin;
+  }
+
+  .analysis-input {
+    min-width: 240px;
+    font-size: 2rem;
+  }
+
+  .scan-options {
+    flex-direction: column;
+    gap: 2.5rem;
+    justify-content: flex-start;
+    padding-top: 12vh;
+    overflow: auto;
+  }
+
+  .scan-option {
+    width: 70vw;
+    height: 70vw;
+    flex-shrink: 0;
+  }
+
+  .scan-diamond--inner {
+    width: 52vmin;
+    height: 52vmin;
+  }
+
+  .scan-diamond--outer {
+    width: 68vmin;
+    height: 68vmin;
+  }
+
+  .scan-label--camera {
+    left: 60%;
+  }
+
+  .camera-video {
+    width: 70vw;
+  }
+
+  .results-grid {
+    grid-template-columns: repeat(2, 34vmin);
+    grid-template-rows: repeat(2, 34vmin);
+  }
+
+  .back-action {
+    left: 16px;
+    bottom: 16px;
+  }
+
+  .proceed-action {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .demo-layout {
+    inset: 100px 16px 80px;
+    flex-direction: column;
+  }
+
+  .demo-sidebar {
+    width: 100%;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .demo-lists {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .code-button {
+    left: auto;
+    right: 16px;
+  }
+
+  .brand-name {
+    left: 16px;
+  }
+
+  .intro-tag {
+    left: calc(16px + 69px + 10px);
+  }
+}
