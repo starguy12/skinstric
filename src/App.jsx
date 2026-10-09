@@ -1,0 +1,54 @@
+import './App.css'
+
+function App() {
+  return (
+    <div className="intro-page">
+      <header className="intro-header">
+        <div className="brand-block">
+          <span className="brand-name">Skinstric</span>
+          <button type="button" className="intro-tag">
+            [ Intro ]
+          </button>
+        </div>
+        <button type="button" className="code-button">
+          Enter Code
+        </button>
+      </header>
+
+      <main className="intro-hero">
+        <h1 className="intro-title">
+          Sophisticated
+          <br />
+          skincare
+        </h1>
+
+        <div className="side-action side-action--left">
+          <div className="dashed-diamond" aria-hidden="true" />
+          <button type="button" className="side-button">
+            <span className="diamond-icon" aria-hidden="true">
+              <span className="diamond-caret diamond-caret--left" />
+            </span>
+            <span className="side-label">Discover A.I.</span>
+          </button>
+        </div>
+
+        <div className="side-action side-action--right">
+          <div className="dashed-diamond" aria-hidden="true" />
+          <button type="button" className="side-button">
+            <span className="side-label">Take Test</span>
+            <span className="diamond-icon" aria-hidden="true">
+              <span className="diamond-caret diamond-caret--right" />
+            </span>
+          </button>
+        </div>
+      </main>
+
+      <p className="intro-footnote">
+        Skinstric developed an A.I. that creates a highly-personalised routine tailored to
+        what your skin needs.
+      </p>
+    </div>
+  )
+}
+
+export default App
