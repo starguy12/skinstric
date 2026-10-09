@@ -347,3 +347,118 @@
   opacity: 1;
   transform: rotate(0deg);
 }
+
+/* Page 3: analysis form */
+.analysis-caption {
+  position: absolute;
+  top: calc(56 / 1080 * 100vh + 64px);
+  left: 32px;
+  margin: 0;
+  font-family: 'Roobert TRIAL', 'Inter', 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #1A1B1C;
+}
+
+.analysis-diamond {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.analysis-diamond--inner {
+  width: calc(560 / 1920 * 100vw);
+  height: calc(560 / 1920 * 100vw);
+}
+
+.analysis-diamond--outer {
+  width: calc(680 / 1920 * 100vw);
+  height: calc(680 / 1920 * 100vw);
+}
+
+.analysis-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.analysis-label {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1A1B1C;
+  opacity: 0.6;
+}
+
+.analysis-input {
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: 'Roobert TRIAL', 'Inter', 'Segoe UI', sans-serif;
+  font-size: calc(56 / 1080 * 100vh);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: #1A1B1C;
+  outline: none;
+  border-bottom: 1px solid #1A1B1C;
+  padding: 0 0 0.35rem;
+  width: 100%;
+  min-width: 320px;
+}
+
+.analysis-input::placeholder {
+  color: #1A1B1C;
+}
+
+.analysis-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #b00020;
+  text-align: center;
+}
+
+.analysis-submit {
+  margin-top: 0.5rem;
+  border: none;
+  background: #1A1B1C;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 3px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.analysis-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.back-action {
+  top: auto;
+  bottom: 32px;
+  left: 32px;
+  transform: none;
+}
+
+.back-action .side-button {
+  width: auto;
+  height: 44px;
+}
+
+.back-action .side-label {
+  width: auto;
+  opacity: 0.7;
+}
