@@ -186,7 +186,7 @@
   border: 2px dashed #A0A4AB;
   opacity: 1;
   pointer-events: none;
-  transform: translateY(-50%) rotate(45deg);
+  transform: translate(-50%, -50%) rotate(45deg);
   transition: transform 0.45s ease;
 }
 
@@ -198,16 +198,16 @@
 }
 
 .dashed-diamond--left {
-  left: calc(-301 / 1920 * 100vw);
+  left: 0;
 }
 
 .dashed-diamond--right {
-  left: calc(1619 / 1920 * 100vw);
+  left: 100%;
 }
 
 .side-action:hover ~ .dashed-diamond,
 .dashed-diamond:hover {
-  transform: translateY(-50%) rotate(45deg) scale(1.08);
+  transform: translate(-50%, -50%) rotate(45deg) scale(1.08);
 }
 
 .side-button {
